@@ -99,12 +99,28 @@ T3. Stats {}""".format(j+1, is_inventory, is_transaction, is_stats))
         if j>0:
             j-=1
     else:
-        ans = int(ans)
-        clearConsole()
-        print(current_list[j*6+ans-1].name)
-        print("stock:", current_list[j*6+ans-1].stock)
-        print(current_list[j*6+ans-1].image)
-        print("sales:", current_list[j*6+ans-1].price)
-        print("sales (thismonth):", current_list[j*6+ans-1].sales)
-        temp = input('back: ')
+        while True:
+            ans = int(ans)
+            clearConsole()
+            print(current_list[j*6+ans-1].name)
+            print("stock:", current_list[j*6+ans-1].stock)
+            print(current_list[j*6+ans-1].image)
+            print("sales:", current_list[j*6+ans-1].price)
+            print("sales (thismonth):", current_list[j*6+ans-1].sales)
+            print("""
+            Command:
+            C1. Add sales
+            C2. Un-sales
+            C3. Restock
+            """)
+            ans1 = input('click: ').lower()
+            if ans=="c1":
+                current_list[j*6+ans-1].transaction_item()
+            elif ans=="c2":
+                all_list = add_item()
+                all_list.sort(key=lambda v: v.name)
+                current_list = all_list
+                search_bar = ''
+            elif ans=="c3":
+                all_list = 1
 
