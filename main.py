@@ -35,7 +35,6 @@ def search():
 
 def add_item():
     all_list.append( item(input('Name: '), int(input('Stock: ')), input('Image dir: '), int(input('Sales: ')), int(input('price: '))) )
-    print(all_list)
     return all_list
     
 all_list = []
@@ -51,7 +50,8 @@ all_list.sort(key=lambda x: x.name)
 current_list = all_list
 
 j=0
-search_bar = ""
+search_bar, is_transaction, is_inventory, is_stats = "", "", "(X)", ""
+
 
 while True:
     clearConsole()
@@ -67,12 +67,12 @@ List item:""".format(search_bar))
             break
         print(str(i+1), '.', current_list[j*6+i].name, ", stock:", current_list[j*6+i].stock)
     print("""
-previous <<   >> next
+previous << {} >> next
 
 Tab:
-T1. Inventory
-T2. Transaction
-T3. Stats""")
+T1. Inventory {}
+T2. Transaction {}
+T3. Stats {}""".format(j+1, is_inventory, is_transaction, is_stats))
     ans = input("click: ").lower()
     
     if ans=="c1":
@@ -80,18 +80,31 @@ T3. Stats""")
         j=0
     elif ans=="c2":
         all_list = add_item()
-        all_list.sort(key=lambda x: x.name)
-        current_list.sort(key=lambda x: x.name)
+        all_list.sort(key=lambda v: v.name)
+        current_list = all_list
         search_bar = ''
     elif ans=="t1":
+        is_inventory, is_transaction, is_stats = "(X)", "", ""
         print("a")
     elif ans=="t2":
+        is_inventory, is_transaction, is_stats = "", "(X)", ""
         print("a")
     elif ans=="t3":
+        is_inventory, is_transaction, is_stats = "", "", "(X)"
         print("a")
-    elif ans=="next" or ">>":
-        j+=1
-    elif ans=="previous" or "<<":
-        j-=1
+    elif ans=="next" or ans ==">>":
+        if j<(len(current_list)-1)//6:
+            j+=1
+    elif ans=="previous" or ans=="<<":
+        if j>0:
+            j-=1
     else:
-        x = i+int(ans)-1
+        ans = int(ans)
+        clearConsole()
+        print(current_list[j*6+ans-1].name)
+        print("stock:", current_list[j*6+ans-1].stock)
+        print(current_list[j*6+ans-1].image)
+        print("sales:", current_list[j*6+ans-1].price)
+        print("sales (thismonth):", current_list[j*6+ans-1].sales)
+        temp = input('back: ')
+
